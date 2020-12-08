@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hospitals to Population in Forsyth Co. NC</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css">
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+    <style>
+html, body, #map { width: 100%; height: 100%; margin: 0; background: #fff; }
+.legend {
+    line-height: 40px;
+    font-size: 16px;
+    width: 190px;
+    color: #333333;
+    padding: 6px 8px;
+    background: white;
+    background: rgba(255,255,255,0.5);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.legend i {
+    width: 20px;
+    height: 20px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.9;
+}
+
+.legend img {
+    width: 16px;
+    height: 16px;
+    margin-right: 3px;
+    float: left;
+}
+
+.legend p {
+    font-size: 14px;
+    line-height: 20px;
+    margin: 0;
+}
+    </style>
+    <script src="https://unpkg.com/leaflet@1.7.0/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/1.3.4/chroma.min.js"></script>
+</head>
+<body>
+  <!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Browser Tab Title Here</title>
+
+  <!-- don't forget to call all of the stylesheets -->
+  <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/cerulean/bootstrap.min.css" rel="stylesheet" integrity="sha384-C++cugH8+Uf86JbNOnQoBweHHAe/wVKN/mb0lTybu/NZ9sEYbd+BbbYtNpWYAsNP" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+  <style>
+    #map {width: 100%;height: calc(40vh);}
+    #about {max-height: calc(80vh);overflow-y: scroll;}
+    /* Small devices (landscape phones, 576px and up) */
+    @media (min-width: 576px) {}
+    /* Medium devices (tablets, 768px and up) */
+    @media (min-width: 768px) {#map {height: calc(60vh);}}
+    /* Large devices (desktops, 992px and up) */
+    @media (min-width: 992px) {#map {height: calc(80vh);}}
+    /* Extra large devices (large desktops, 1200px and up) */
+    @media (min-width: 1200px) {}
+  </style>
+</head>
+
+<body>
+<!-- now that we're in the body of our page, you can see it is broken up into three page sections, which are all held in a fluid div container-->
+
+  <div class="container-fluid">
+    <!-- this section defines the header part of the page, or first 'row'-->
+    <header class="row py-3 bg-primary text-white">
+      <div class="col mx-2">
+        <h1 class="h1">Covid-19 Cases Rising in Forsyth County, NC!</h1>
+      </div>
+    </header>
+
+    <!-- this section defines the 'middle' part of the page, broken up into two parts-->
+    <section class="row bg-light">
+      <!-- first, here's the "about" info section on the left-->
+      <aside id="about" class="col-12 col-md-5 col-lg-4 text-dark py-2">
+        <section>
+          <h2 class="h2 text-dark">About This Map</h2>
+          <p>The article for this map can be found <a href="https://journalnow.com/news/local/forsyth-reports-268-new-covid-cases-friday-more-patients-are-hospitalized-in-triad-region-than/article_7738d3f0-30d7-11eb-8ef3-d7234e6b8d9d.html">here</a>.</p>
+          <p>In the last few weeks Coronavirus cases have been rising all over the country and the world.  Here in Forsyth County,
+            North Carolina they are experiencing the same fate.  Cases have been on a steady rise and the number of hospitalizations
+            are also increasing in the county.  At this rate the hospitals will begin to get overwhelmed with patients.</p>
+          <p>Just how many hospitals are available to the public? That is what this map will hipefully answer.
+          Gathering data on the population density and the location of the maps will help show just what is available.
+        It also gives the public knowledge on who has easy access and which hospitals are closest to them.</p>
+          <p>With more and more people letting their gaurd down and easing up on restrictions the number of cases and death will just
+          go up.</p>
+        </section>
+      </aside>
+
+      <!-- second, here's the map div container, located on the right-->
+      <div class="col-12 col-md-7 col-lg-8 px-0">
+        <div id="map" class="bg-light position-relative"></div>
+      </div>
+    </section>
+
+    <!-- middle section has ended, now here's the page footer-->
+    <footer class="row bg-primary text-white py-3">
+      <div class="col mx-2">
+        <ul class="list-unstyled">
+          <li>Ciara Fogarty</li>
+          <li>12/08/20</li>
+          <li><a href="#">NC One Map and City of Winston Salem Open Data</a></li>
+        </ul>
+      </div>
+    </footer>
+  </div> <!-- end of fluid container -->
+
+  <!--don't forget to call all of the necessary JS libraries -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.min.js"></script>
+
+  <!-- and then you can begin writing your JS for the map -->
+<!-- Our web map and content will go here -->
+<div id="map"></div>
+<script>
+// 1. Create a map object.
+var mymap = L.map('map', {
+    center: [36.0983,-80.2474], //note that we've centered the map to downtown AVL
+    zoom: 10, //this line adjusts the starting zoom level of the map
+    maxZoom: 20,//this line sets the maximum zoom level
+    minZoom: 5,//this line sets the minimum zoom level
+    detectRetina: true // detect whether the sceen is high resolution or not.
+});
+
+// 2. Add a base map.
+    L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png').addTo(mymap);
+
+
+// 3. build up a set of colors from colorbrewer's dark2 category
+var colors = chroma.scale('Dark2').mode('lch').colors(3);
+
+
+// 4. dynamically append style classes to this page. The style classes will be used to shade the markers.
+// We can use a for loop to do this write this css style tag.
+for (i = 0; i < 4; i++) {
+    $('head').append($("<style> .marker-color-" + (i + 1).toString() + " { color: " + colors[i] + "; font-size: 30px; text-shadow: 0 0 3px #ffffff;} </style>"));
+}
+
+// Get GeoJSON and put it on the map when it loads
+// Make sure you have the correct directory path below
+// You can see we're also adding attribution information for our data sources
+Hospital = L.geoJson.ajax("assets/Hospital.geojson",{
+
+// assign a function to the onEachFeature parameter of the Hospitals object.
+// Then each (point) feature will have a popup window.
+// The content of the popup window is the FCOUNTY from the attribute table
+  onEachFeature: function (feature, layer) {
+      point.bindPopup(feature.properties.FACILITY);
+  },
+
+ pointToLayer: function(feature, latlng) {
+  var id = 0;
+  if (feature.properties.FCOUNTY == "Forsyth") { id = 1; }
+  else { id = 4;} // All other counties
+},
+   attribution: 'Hospitals &copy; NC One Map | Winston Salem Tract &copy; City of Winston Salem Open Data | Base Map &copy; CartoDB | Map Author: CFogarty '
+});
+// Add the Hospitals to the map.
+ Hospital.addTo(mymap);
+
+// 5. Set function for color ramp
+colors = chroma.scale('Blues').colors(5); //we'll use 5 classes of blues
+
+// this function manually defines your choropleth classification system
+//so you'll need to figure out which break points you'd like to use
+//based on the data distribution
+//this equal interval classification with 5 classes, takes the range of the
+//data (133) and divides it by 5, to show there are intervals of 27 per class
+//so...
+function setColor(density) {
+    var id = 0;
+    if (density > 5201) { id = 4; }
+    else if (density > 3149 && density <= 4175) { id = 3; } //4175-1026=3149:4thclass
+    else if (density > 2123 && density <= 3149) { id = 2; } //3149-1026=2123:3rdclass
+    else if (density > 1097 &&  density <= 2123) { id = 1; } //2123-1026=1097:2ndclass
+    else  { id = 0; }
+    return colors[id];
+}
+
+// 6. Set style function that sets fill color Population Density equal to
+function style(feature) {
+    return {
+        fillColor: setColor(feature.properties.POP_DENSIT),
+        fillOpacity: 0.7,
+        weight: 1,
+        opacity: 1,
+        color: '#b4b4b4',
+        dashArray: '1'
+    };
+}
+
+// 7. Add county polygons
+L.geoJson.ajax("assets/Pop_density.geojson", {
+    style: style
+}).addTo(mymap);
+
+// 8. Create Leaflet Control Object for Legend
+var legend = L.control({position: 'topright'});
+
+// 9. Function that runs when legend is added to map
+legend.onAdd = function () {
+
+    // Create Div Element and Populate it with HTML
+    var div = L.DomUtil.create('div', 'legend');
+    //this line creates a title for the choropleth part of the legend
+    div.innerHTML += '<b>Population density</b><br />';
+    //notice the class breaks entered at the end of the next 5 lines
+    //the colors specify the shade of Reds that we used to do the polygon shading
+    div.innerHTML += '<i style="background: ' + colors[4] + '; opacity: 0.7"></i><p>4175-5201</p>';
+    div.innerHTML += '<i style="background: ' + colors[3] + '; opacity: 0.7"></i><p>3149-4175</p>';
+    div.innerHTML += '<i style="background: ' + colors[2] + '; opacity: 0.7"></i><p>2123-3149</p>';
+    div.innerHTML += '<i style="background: ' + colors[1] + '; opacity: 0.7"></i><p>1097-2123</p>';
+    div.innerHTML += '<i style="background: ' + colors[0] + '; opacity: 0.7"></i><p>72-1097</p>';
+    //this line provides the legend title for the school colored symbols
+    div.innerHTML += '<hr><b>Hospitals<b><br />';
+    //the next 3 lines call the school icon along with its proper color
+    //notice the names of the School types listed within the <p> tags at the end of the lines
+
+    // Return the Legend div containing the HTML content
+    return div;
+};
+
+// 10. Add a legend to map
+legend.addTo(mymap);
+
+// 11. Add a scale bar to map
+L.control.scale({position: 'bottomright'}).addTo(mymap);
+
+</script>
+</body>
+</html>
